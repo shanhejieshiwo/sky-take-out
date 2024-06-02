@@ -1,0 +1,88 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: ${sky.datasource.driver-class-name}
+    username: ${sky.datasource.username}
+    password: ${sky.datasource.password}
+  data:
+    redis:
+      host: ${sky.redis.host}
+      port: ${sky.redis.port}
+      database: ${sky.redis.database}
+
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      sky:
+        mapper: debug
+        service: info
+        controller: info
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: xiangwenranxiangwenran
+    # 设置jwt过期时间,2h
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+    user-secret-key: wenranwenranwenran
+    user-ttl: 7200000
+    user-token-name: authentication
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+
+
+# springdoc-openapi项目访问访问地址: http://127.0.0.1:8080/doc.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    # path: 配置swagger-ui.html/UI界面的访问路径,默认为/swagger-ui.html
+    tags-sorter: alpha
+    # tags-sorter: 接口文档中的tags排序规则,默认为alpha,可选值为alpha(按字母顺序排序)或as-is(按照在代码中定义的顺序排序)
+    operations-sorter: alpha
+
+  api-docs:
+    path: /v3/api-docs
+    # path: 配置api-docs的访问路径,默认为/v3/api-docs
+
+  group-configs:
+    # group-configs: 配置分组信息
+    - group: 'default'
+      # group: 分组名称
+      paths-to-match: '/**'
+      # paths-to-match: 配置要匹配的路径,默认为/**
+      packages-to-scan: cn.bytewisehub.pai.web
+      # packages-to-scan: 配置要扫描的包的路径,直接配置为Controller类所在的包名即可
+
+# knife4j项目访问访问地址:http://127.0.0.1:8080/doc.html#/home
+knife4j:
+  enable: true
+  # 设置为true以启用Knife4j增强功能,这将再应用程序中启用Knife4j UI
+  setting:
+    # language: 设置Knife4j UI的语言,默认为zh_cn,可选值为zh_cn或en
+    language: zh_cn
+  #开启生产环境屏蔽
+  production: false
+  #是否启用登录认证
+#  basic:
+#    enable: false
+#    username: xiang # 自己设置一个
+#    password: xiang# 自己设置一个
